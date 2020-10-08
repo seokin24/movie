@@ -25,7 +25,7 @@
             </div>
         </div>
 		<div class="col-xs-12 col-sm-12 col-md-12 header" style="padding:0px;">
-            <ul class ="top_header">   
+            <ul class ="top_header">
                 <li class="top_title">탈모가 좋다!</li>
                 <li class="top_sunwi">상영작<br>예매순위</li>
             </ul>
@@ -46,7 +46,7 @@
 		</div>
 
 		<div class="col-xs-12 col-sm-12 col-md-12" id="table">
-			
+
 		</div>
 		<!--
         <section ng-app="">
@@ -54,7 +54,7 @@
             <p ng-bind="nnn"></p>
         </section>-->
         <div id="player">
-		
+
 		</div>
 	</body>
 </html>
@@ -66,10 +66,10 @@
 <script type="text/javascript">
 
 	/*$(document).ready(function(){
-		
+
 		gettopitem();
 		youtube();
-        
+
         setTimeout(function(){
             $("#loding").hide(2000);
         }, 7000);
@@ -77,17 +77,17 @@
         $("#searchtext").click(function(){
             $("#searchic").css("color","black");
         });
-		
+
 		if(window.event.keyCode == 13) {
 			movieSearch();
 		}
 
 	});*/
 	window.onload = function(){
-		
+
 		gettopitem();
 		youtube();
-        
+
         setTimeout(function(){
             $("#loding").hide(2000);
         }, 7000);
@@ -95,19 +95,19 @@
         $("#searchtext").click(function(){
             $("#searchic").css("color","black");
         });
-		
+
 		if(window.event.keyCode == 13) {
 			movieSearch();
 		}
 
 	}
-	
+
 	function onKeyDown(){
      if(event.keyCode == 13){
 		movieSearch()
      }
 	}
-	
+
 	function movieSearch(){
 		var gun = "";
 		var tag = "";
@@ -144,7 +144,7 @@
 			success : function(txt){
 				console.log(txt);
 				gun = txt;
-				
+
 			}
 		});
 
@@ -154,7 +154,7 @@
 			return false;
 		}
 		$("#mainvideo").css("display","block");
-		var dun = gun.split("^^"); 
+		var dun = gun.split("^^");
 		tag +="<li><a href = '"+dun[1]+"'><img src = '"+dun[2]+"' style='height:100%; width:100%;'></a></li>";
 		tag +="<li>";
 		tag +="<ul style='padding-top:14px; padding-left:10px;'>";
@@ -172,23 +172,23 @@
 			tag2 += "<iframe  style='border-radius:20px; width:100%; height:100%;' src='https://www.youtube.com/embed/"+videoId+"' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>";
 			$(".movileft").html(tag2);
 		}, 500);
-		
+
 	}
 
 	function getitem(){
 		var day = new Date();
-		day.setTime(new Date().getTime()-(1*24*60*60*1000));	
+		day.setTime(new Date().getTime()-(1*24*60*60*1000));
 		var year = day.getFullYear();
 		var month = ""+(day.getMonth()+1);
 		var monday = ""+(day.getDate());
-		
+
 
 		if(month.length < 2) month = "0" + month;
         if(monday.length < 2) monday = "0" + monday;
-    
+
 
 		var dide= year.toString()+month+monday;
-		
+
 		var videoId = $("#videoID").val();
 		var key = "a1f12187e3bed8396926bc1ae45a5037";
 		var targetDt = dide;
@@ -204,7 +204,7 @@
 				//console.log(json.showRange);
 				  $.each(json, function(indigo, jutis){
 					  for(var i =0; i<jutis.dailyBoxOfficeList.length; i++){
-						
+
 						var data = {title : jutis.dailyBoxOfficeList[i]['movieNm'] };
 						$.ajax({
 							type : "post",
@@ -304,19 +304,19 @@
 	}
     function gettopitem(){
 		var day = new Date();
-		day.setTime(new Date().getTime()-(1*24*60*60*1000));	
-		
+		day.setTime(new Date().getTime()-(1*24*60*60*1000));
+
 		var year = day.getFullYear();
 		var month = ""+(day.getMonth()+1);
 		var monday = ""+(day.getDate());
-		
-		
+
+
 		if(month.length < 2) month = "0" + month;
         if(monday.length < 2) monday = "0" + monday;
-    
+
 
 		var dide= year.toString()+month+monday;
-		
+
 
 		var key = "a1f12187e3bed8396926bc1ae45a5037";
 		var targetDt = dide;
@@ -332,9 +332,9 @@
 				//console.log(json.showRange);
 				  $.each(json, function(indigo, jutis){
 					  for(var i =0; i<jutis.dailyBoxOfficeList.length; i++){
-						
+
 						var data = {title : jutis.dailyBoxOfficeList[i]['movieNm'] };
-						
+
 						$("#mvinm").val(jutis.dailyBoxOfficeList[0]['movieNm']);
 
                         $.ajax({
@@ -348,8 +348,8 @@
 								dudnu2++;
 							}
 						});
-                        var vzs = dun.split('*'); 
-                        tag2 += "<li class='top_headli'><a href='"+vzs[1]+"'><img class='miniimg"+i+"' src ='"+vzs[0]+"'></a></li>"; 
+                        var vzs = dun.split('*');
+                        tag2 += "<li class='top_headli'><a href='"+vzs[1]+"'><img class='miniimg"+i+"' src ='"+vzs[0]+"'></a></li>";
 					  }
 				  });
                 $(".top_header").append(tag2);
@@ -363,5 +363,5 @@
 		})
 
 	}
-	
+
 </script>
