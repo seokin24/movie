@@ -1,0 +1,367 @@
+<!doctype html>
+
+<html>
+	<head>
+		<title>탈모가 좋다!</title>
+		<meta charset="utf-8"/>
+		<script src ="js/jquery-3.5.1.min.js" type="javascript"></script>
+		<script src ="KobisOpenAPIRestService.js" type="javascript"></script>
+		<!-- 합쳐지고 최소화된 최신 CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="css/style.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+        <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>-->
+        <script src="https://kit.fontawesome.com/755c671974.js" crossorigin="anonymous"></script>
+        <link rel = "icon" href = "img/unnamed.ico">
+	</head>
+	<style>
+
+	</style>
+	<body>
+        <div id ="loding" style="width:100%; height:1000px;position : absolute; top:0; left:0; z-index:1000; background-color: rgb(20,20,20); transition : all ease 2s;">
+            <div style="width:800px;padding-top:200px;margin: 0 auto;">
+                 <img src= "img/5a547c62b9fbd8b451f2540899a53a64.gif" style="position:absolute;clip: rect(10px,790px,500px,10px); "/>
+            </div>
+        </div>
+		<div class="col-xs-12 col-sm-12 col-md-12 header" style="padding:0px;">
+            <ul class ="top_header">   
+                <li class="top_title">탈모가 좋다!</li>
+                <li class="top_sunwi">상영작<br>예매순위</li>
+            </ul>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12" style="text-align:right; position:relative; background-color:black;">
+            <input type ="text" name = "searchtext" id = "searchtext" placeholder="입력 후 검색하실 경우 해당 영화의 정보가 나타납니다." onKeyDown="onKeyDown()"/>
+            <i class="fas fa-search" id="searchic" onclick="movieSearch()" style="cursor:pointer;"></i>
+		</div>
+        <div class="col-xs-12 col-sm-12 col-md-12" id="mainvideo">
+			<div class="col-xs-8 movileft" style=" height:100%;">
+
+			</div>
+			<div class="col-xs-4"style="height:100%;">
+				<ul class="moviright">
+
+				</ul>
+			</div>
+		</div>
+
+		<div class="col-xs-12 col-sm-12 col-md-12" id="table">
+			
+		</div>
+		<!--
+        <section ng-app="">
+            <p> 이름 : <input type="text" ng-model="nnn" placeholder="입력하세요" /> </p>
+            <p ng-bind="nnn"></p>
+        </section>-->
+        <div id="player">
+		
+		</div>
+	</body>
+</html>
+
+<input type="hidden" id="videoID" />
+<input type="hidden" id="mvinm" />
+<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>-->
+
+<script type="text/javascript">
+
+	/*$(document).ready(function(){
+		
+		gettopitem();
+		youtube();
+        
+        setTimeout(function(){
+            $("#loding").hide(2000);
+        }, 7000);
+
+        $("#searchtext").click(function(){
+            $("#searchic").css("color","black");
+        });
+		
+		if(window.event.keyCode == 13) {
+			movieSearch();
+		}
+
+	});*/
+	window.onload = function(){
+		
+		gettopitem();
+		youtube();
+        
+        setTimeout(function(){
+            $("#loding").hide(2000);
+        }, 7000);
+
+        $("#searchtext").click(function(){
+            $("#searchic").css("color","black");
+        });
+		
+		if(window.event.keyCode == 13) {
+			movieSearch();
+		}
+
+	}
+	
+	function onKeyDown(){
+     if(event.keyCode == 13){
+		movieSearch()
+     }
+	}
+	
+	function movieSearch(){
+		var gun = "";
+		var tag = "";
+		var tag2 = "";
+		if($("#searchtext").val()==""){
+			alert("검색어를 입력해주세요");
+			return false;
+		}
+		var value = $("#searchtext").val().concat("", " 예고편");
+		var videoId = "";
+		var data = { "q" : value ,"part" : "snippet", "key" : "AIzaSyB6G7X2nqEueNjiEDJzrRvjgvzYmCQCM5M","maxResults" : 1};
+		$.ajax({
+			type :"GET",
+			dataType : "JSON",
+			url : "https://www.googleapis.com/youtube/v3/search",
+			data : data,
+			success : function(t){
+				console.log(data);
+				for(var i =0; i < t.items.length; i++){
+					//console.log(t.items[i].snippet.title);
+					//console.log(t.items[i].snippet.channelId);
+					//console.log(t.items[i].snippet.description);
+
+					videoId = t.items[i].id.videoId;
+				}
+            }
+		});
+
+		$.ajax({
+			type : "post",
+			async : false,
+			data : {title : $("#searchtext").val() },
+			url : "movisearchajax.php",
+			success : function(txt){
+				console.log(txt);
+				gun = txt;
+				
+			}
+		});
+
+		if(gun==""){
+			alert("검색값을 찾지 못하였습니다.");
+			$("#mainvideo").css("display","none");
+			return false;
+		}
+		$("#mainvideo").css("display","block");
+		var dun = gun.split("^^"); 
+		tag +="<li><a href = '"+dun[1]+"'><img src = '"+dun[2]+"' style='height:100%; width:100%;'></a></li>";
+		tag +="<li>";
+		tag +="<ul style='padding-top:14px; padding-left:10px;'>";
+		tag +="<li style='font-size:15px;'>영 화 명 : "+dun[0]+"</li>";
+		tag +="<li style='font-size:15px;'>상 영 연 도 : "+dun[3]+"</li>";
+		tag +="<li style='font-size:15px;'>감 독 : "+dun[4]+"</li>";
+		tag +="<li style='font-size:15px;'>출 연 배 우  : "+dun[5]+"</li>";
+		tag +="<li style='font-size:15px;'>평 점  : "+dun[6]+"</li>";
+		tag +="</ul>";
+		tag +="</li>";
+
+		$(".moviright").html(tag);
+
+		setTimeout(function(){
+			tag2 += "<iframe  style='border-radius:20px; width:100%; height:100%;' src='https://www.youtube.com/embed/"+videoId+"' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>";
+			$(".movileft").html(tag2);
+		}, 500);
+		
+	}
+
+	function getitem(){
+		var day = new Date();
+		day.setTime(new Date().getTime()-(1*24*60*60*1000));	
+		var year = day.getFullYear();
+		var month = ""+(day.getMonth()+1);
+		var monday = ""+(day.getDate());
+		
+
+		if(month.length < 2) month = "0" + month;
+        if(monday.length < 2) monday = "0" + monday;
+    
+
+		var dide= year.toString()+month+monday;
+		
+		var videoId = $("#videoID").val();
+		var key = "a1f12187e3bed8396926bc1ae45a5037";
+		var targetDt = dide;
+        var tag ="";
+        var tag2 = "";
+		var imgmgarray = new Array();
+        var dudnu = 0;
+        var dudnu2 = 0;
+		var dun = "";
+		$.getJSON("http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json" , {key : key, targetDt : targetDt}, function(json){
+			if(json != null){
+				var html = '';
+				//console.log(json.showRange);
+				  $.each(json, function(indigo, jutis){
+					  for(var i =0; i<jutis.dailyBoxOfficeList.length; i++){
+						
+						var data = {title : jutis.dailyBoxOfficeList[i]['movieNm'] };
+						$.ajax({
+							type : "post",
+                            async : false,
+							data : {title : "영화 "+jutis.dailyBoxOfficeList[i]['movieNm'] },
+							url : "movieimgajax.php",
+							success : function(txt){
+								//console.log(txt);
+								//console.log(jutis.dailyBoxOfficeList[dudnu]['movieNm'])
+								//console.log(".img"+dudnu);
+								$(".img"+dudnu).attr("src", txt);
+								dun = txt;
+								dudnu++;
+							}
+						});
+						tag += "<ul class='inline'>";
+						tag += "<li>랭 크 : "+jutis.dailyBoxOfficeList[i]['rank']+"</li>";
+						tag += "<li ><img id = 'movieimg' class='img"+i+"' src ='"+dun+"'></li>";
+						tag += "<li>영 화 명 : "+jutis.dailyBoxOfficeList[i]['movieNm']+"</li>";
+                        tag += "<li>일일 관 객 수 : "+jutis.dailyBoxOfficeList[i]['audiCnt'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+"명</li>";
+						tag += "<li>누적 관 객 수 : "+jutis.dailyBoxOfficeList[i]['audiAcc'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+"명</li>";
+						tag += "<li>누 적 매 출 액 : "+jutis.dailyBoxOfficeList[i]['salesAcc'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+"원</li>";
+                        tag += "</ul>";
+						if(i==4){
+							tag += "<ul style='display:block;'>";
+							tag += "<li style='height:750px; text-align:center;'>"
+							tag += "<iframe width='1280' height='720'  style='border-radius:20px;' src='https://www.youtube.com/embed/"+videoId+"?autoplay=1' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>";
+							tag += "</li>"
+							tag += "</ul>"
+						}
+                        /*$.ajax({
+							type : "post",
+                            async : false,
+							data : {title : jutis.dailyBoxOfficeList[i]['movieNm'] },
+							url : "ajax.php",
+							success : function(txt){
+								$(".miniimg"+dudnu2).attr("src", txt);
+								dun = txt;
+								dudnu2++;
+							}
+						});
+                        tag2 += "<li class='top_headli'><img class='miniimg"+i+"' src ='"+dun+"'></li>"; */
+					  }
+				  });
+
+              $("#table").html(tag);
+             // $(".top_header").append(tag2);
+			}else{
+				alert("d");
+			}
+		})
+
+	}
+    function youtube(){
+        $.ajax({
+            type : "GET",
+            dataType : "JSON",
+            url : "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=PLc1NK6lRD8wWBrxbcCF4pXyURe37aGay-&maxResults=8&key=AIzaSyB6G7X2nqEueNjiEDJzrRvjgvzYmCQCM5M",
+            contentType : "application/json",
+            success : function(jsonData) {
+            for (var i = 0; i < jsonData.items.length; i++) {
+                var items = jsonData.items[i];
+               // console.log("title : "+items.snippet.title);
+               // console.log("videoId : "+"https://youtu.be/"+items.snippet.resourceId.videoId);
+               // console.log("썸네일 : "+items.snippet.thumbnails.high.url);
+            }
+            },
+            complete : function(data) {
+            },
+            error : function(xhr, status, error) {
+            console.log("유튜브 요청 에러: "+error);
+            }
+        });
+
+    }
+    function youtubeserch(){
+		var value = $("#mvinm").val().concat("", " 예고편");
+		var videoId = "";
+		var data = { "q" : value ,"part" : "snippet", "key" : "AIzaSyB6G7X2nqEueNjiEDJzrRvjgvzYmCQCM5M","maxResults" : 1};
+		$.ajax({
+			type :"GET",
+			dataType : "JSON",
+			url : "https://www.googleapis.com/youtube/v3/search",
+			data : data,
+			success : function(t){
+				console.log(data);
+				for(var i =0; i < t.items.length; i++){
+					//console.log(t.items[i].snippet.title);
+					//console.log(t.items[i].snippet.channelId);
+					//console.log(t.items[i].snippet.description);
+
+					videoId = t.items[i].id.videoId;
+				}
+				$("#videoID").val(videoId);
+            }
+		});
+	}
+    function gettopitem(){
+		var day = new Date();
+		day.setTime(new Date().getTime()-(1*24*60*60*1000));	
+		
+		var year = day.getFullYear();
+		var month = ""+(day.getMonth()+1);
+		var monday = ""+(day.getDate());
+		
+		
+		if(month.length < 2) month = "0" + month;
+        if(monday.length < 2) monday = "0" + monday;
+    
+
+		var dide= year.toString()+month+monday;
+		
+
+		var key = "a1f12187e3bed8396926bc1ae45a5037";
+		var targetDt = dide;
+        var tag ="";
+        var tag2 = "";
+		var imgmgarray = new Array();
+        var dudnu = 0;
+        var dudnu2 = 0;
+		var dun = "";
+		$.getJSON("http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json" , {key : key, targetDt : targetDt}, function(json){
+			if(json != null){
+				var html = '';
+				//console.log(json.showRange);
+				  $.each(json, function(indigo, jutis){
+					  for(var i =0; i<jutis.dailyBoxOfficeList.length; i++){
+						
+						var data = {title : jutis.dailyBoxOfficeList[i]['movieNm'] };
+						
+						$("#mvinm").val(jutis.dailyBoxOfficeList[0]['movieNm']);
+
+                        $.ajax({
+							type : "post",
+                            async : false,
+							data : {title : jutis.dailyBoxOfficeList[i]['movieNm'] },
+							url : "ajax.php",
+							success : function(txt){
+                                $(".miniimg"+dudnu2).attr("src", txt);
+								dun = txt;
+								dudnu2++;
+							}
+						});
+                        var vzs = dun.split('*'); 
+                        tag2 += "<li class='top_headli'><a href='"+vzs[1]+"'><img class='miniimg"+i+"' src ='"+vzs[0]+"'></a></li>"; 
+					  }
+				  });
+                $(".top_header").append(tag2);
+				youtubeserch();
+				setTimeout(function(){
+					getitem();
+				}, 4000);
+			}else{
+
+			}
+		})
+
+	}
+	
+</script>
