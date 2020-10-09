@@ -341,7 +341,7 @@
 						$("#mvinm").val(jutis.dailyBoxOfficeList[0]['movieNm']);
 
                         $.ajax({
-							type : "post",
+							type : "get",
                             async : false,
 							data : {title : jutis.dailyBoxOfficeList[i]['movieNm'] },
 							url : "ajax.php",
