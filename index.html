@@ -64,7 +64,7 @@
 <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>-->
 
 <script type="text/javascript">
-
+	/*
 	$(document).ready(function(){
 
 		gettopitem();
@@ -83,25 +83,26 @@
 		}
 
 	});
-	/*
+	*/
 	window.onload = function(){
+		setTimeout(function(){
+			gettopitem();
+			youtube();
+		}, 300);
 
-		gettopitem();
-		youtube();
+		setTimeout(function(){
+		    $("#loding").hide(2000);
+		}, 7000);
 
-        setTimeout(function(){
-            $("#loding").hide(2000);
-        }, 7000);
+		$("#searchtext").click(function(){
+		    $("#searchic").css("color","black");
+		});
 
-        $("#searchtext").click(function(){
-            $("#searchic").css("color","black");
-        });
+			if(window.event.keyCode == 13) {
+				movieSearch();
+			}
 
-		if(window.event.keyCode == 13) {
-			movieSearch();
-		}
-
-	}*/
+	}
 
 	function onKeyDown(){
      if(event.keyCode == 13){
