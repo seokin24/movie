@@ -1,6 +1,6 @@
 <?php
-
-	  
+	echo $_GET['title'];
+	 /* 
 	  $client_id = "250hnAjA4_tT81X4cyva";
 	  $client_secret = "9xiz7ObgRf";
 	  $encText = urlencode($_GET['title']);
@@ -34,5 +34,5 @@
 		  } else {
 			echo "Error 내용:".$response;
 		  }
-
+	*/
 ?>
