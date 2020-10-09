@@ -344,7 +344,7 @@
 							type : "get",
                             async : false,
 							data : {title : jutis.dailyBoxOfficeList[i]['movieNm'] },
-							url : "ajax.php?title='"jutis.dailyBoxOfficeList[i]['movieNm']"'",
+							url : "ajax.php",
 							success : function(txt){
                                 $(".miniimg"+dudnu2).attr("src", txt);
 								dun = txt;
