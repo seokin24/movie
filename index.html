@@ -213,7 +213,7 @@
 							type : "post",
                             async : false,
 							data : {title : "영화 "+jutis.dailyBoxOfficeList[i]['movieNm'] },
-							url : "https://seokin24.github.io/movie/movieimgajax.php",
+							url : "http://hsi.dothome.co.kr/movie/movieimgajax.php",
 							success : function(txt){
 								//console.log(txt);
 								//console.log(jutis.dailyBoxOfficeList[dudnu]['movieNm'])
@@ -344,7 +344,7 @@
 							type : "POST",
                             async : false,
 							data : {title : jutis.dailyBoxOfficeList[i]['movieNm'] },
-							url : "https://github.com/seokin24/movie/tree/master/.github/workflows/naver_ajax.php",
+							url : "http://hsi.dothome.co.kr/movie/naver_ajax.php",
 							success : function(txt){
                                 $(".miniimg"+dudnu2).attr("src", txt);
 								dun = txt;
