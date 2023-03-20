@@ -20,8 +20,7 @@
 	  //echo "status_code:".$status_code."";
 
 	  curl_close ($ch);
-		
-    if($status_code == 200) {
+	 if($status_code == 200) {
 		$xml = simplexml_load_string($response) or die("에러: 객체를 생성할 수 없습니다");
 		$items = $xml->channel->item;
 		if(!empty($items)){
