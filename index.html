@@ -213,13 +213,15 @@
 							type : "post",
                             async : false,
 							data : {title : "영화 "+jutis.dailyBoxOfficeList[i]['movieNm'] },
-							url : "http://hsi.dothome.co.kr/movie/movieimgajax.php",
+							url : "http://152.67.204.46:28585/movieimgajax",
 							success : function(txt){
-								//console.log(txt);
+								//console.log(txt['results']['0']['link']);
 								//console.log(jutis.dailyBoxOfficeList[dudnu]['movieNm'])
 								//console.log(".img"+dudnu);
-								$(".img"+dudnu).attr("src", txt);
-								dun = txt;
+								//console.log(".img"+dudnu.link);
+								var imgSrc = txt['results']['0']['link'];
+								$(".img"+dudnu).attr("src", imgSrc);
+								dun = imgSrc;
 								dudnu++;
 							}
 						});
@@ -329,22 +331,22 @@
         var dudnu = 0;
         var dudnu2 = 0;
 		var dun = "";
+
 		$.getJSON("http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json" , {key : key, targetDt : targetDt}, function(json){
 			if(json != null){
 				var html = '';
 				//console.log(json.showRange);
 				  $.each(json, function(indigo, jutis){
 					  for(var i =0; i<jutis.dailyBoxOfficeList.length; i++){
-
-						var data = {title : jutis.dailyBoxOfficeList[i]['movieNm'] };
-
+						//var data = {title : jutis.dailyBoxOfficeList[i]['movieNm'] };
 						$("#mvinm").val(jutis.dailyBoxOfficeList[0]['movieNm']);
-
-                        $.ajax({
+						//console.log("test : " + jutis.dailyBoxOfficeList[i]);
+						// 2023 네이버 서비스 종료로 인하여 주석
+                        /*$.ajax({
 							type : "POST",
                             async : false,
 							data : {title : jutis.dailyBoxOfficeList[i]['movieNm'] },
-							url : "http://hsi.dothome.co.kr/movie/naver_ajax.php",
+							url : "http://localhost:8000/movieNmajax",
 							success : function(txt){
                                 $(".miniimg"+dudnu2).attr("src", txt);
 								dun = txt;
@@ -353,6 +355,7 @@
 						});
                         var vzs = dun.split('*');
                         tag2 += "<li class='top_headli'><a href='"+vzs[1]+"'><img class='miniimg"+i+"' src ='"+vzs[0]+"'></a></li>";
+						*/
 					  }
 				  });
                 $(".top_header").append(tag2);
@@ -364,7 +367,7 @@
 
 			}
 		})
-
+		
 	}
 
 </script>
