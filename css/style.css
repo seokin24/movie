@@ -1,44 +1,224 @@
 @charset "utf-8";
 
-/*
-	font-family: 'Bebas Neue', cursive;
-	font-family: 'Noto Sans KR', sans-serif;
-	font-family: 'Nanum Pen Script', cursive;
-	font-family: 'Sunflower', sans-serif;
-	font-family: 'Jua', sans-serif;
-	font-family: 'Cute Font', cursive;
-	font-family: 'Single Day', cursive;
-*/
-		
-*{font-family: 'Jua', sans-serif; list-style : none; margin:0px; padding:0px; }
-html,body{background-color: black;}
-a{text-decoration:none; color:black;}
-.top_header{background-color:black; color:white;}
-.top_header{margin:0px;  height:160px;}
-.top_header > li{float:left;}
-.top_title{width:30%; text-align: center; font-size:70px; padding: 30px 10px;}
-.top_sunwi{width:10%; font-size: 40px; padding:20px; background-color: #a9a9a9;}
-.top_extwi{width:60%; font-size: 20px;}
-.top_extwi > ul >li{padding : 5px 0px;}
-.top_headli {width:6%;}
-.top_headli > a >img{width:100%; height:100%;}
+/* ==============================
+   1. 기본 세팅
+============================== */
+* {
+    font-family: 'Jua', sans-serif;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-#table{background-color: black; color:white; padding-top:15px;}
+html, body {
+    background: #0f0f14;
+    color: #ffffff;
+}
 
-.top_header > li {display: inline-block; height:100%;}
-.header{background-color:black; color:white;}
-.inline{display:inline-block; padding: 0px 15px; width:20%;}
-.inline > li {font-size:20px;}
-.inline > li > img{width:100%; height:200px;}
+/* ==============================
+   2. 상단 헤더
+============================== */
+.top_header {
+    background: linear-gradient(135deg, #1e1e2f, #12121a);
+    height: 160px;
+    display: flex;
+    align-items: center;
+    padding: 0 40px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
 
-#movieimg{width:100%; height:300px; border-radius : 15px;}
-#movieimg > img{width:100%; height:100%;}
+.top_header > li {
+    display: flex;
+    align-items: center;
+}
 
-#mainvideo{background-color: black; height:700px; display: none; transition : all ease 2s;}
+.top_title {
+    width: 30%;
+    font-size: 56px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    background: linear-gradient(90deg, #ff4e50, #f9d423);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 
-#searchtext{height:70px; margin : 10px 0px; border: 2px solid #ddd; width:100%; font-size:35px; border-radius: 5px; padding : 0px 10px;}
-#searchic{position: absolute; font-size:35px; top:25px; right:35px; color:black;}
+.top_sunwi {
+    width: 10%;
+    font-size: 24px;
+    background: rgba(255,255,255,0.08);
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    margin-right: 20px;
+}
 
-.moviright{color:white; padding-top:10px;}
-.moviright > li{display: inline-block; float:left; font-size:14px;}
-.moviright::after{content: ""; clear: both; display: block;}
+.top_extwi {
+    width: 60%;
+    font-size: 15px;
+    opacity: 0.7;
+}
+
+.top_extwi > ul > li {
+    padding: 4px 0;
+}
+
+/* ==============================
+   3. 검색 영역
+============================== */
+#searchtext {
+    height: 65px;
+    margin: 15px 0;
+    border: none;
+    width: 100%;
+    font-size: 20px;
+    border-radius: 40px;
+    padding: 0 25px;
+    background: rgba(255,255,255,0.08);
+    color: white;
+    backdrop-filter: blur(10px);
+    transition: 0.3s ease;
+}
+
+#searchtext:focus {
+    outline: none;
+    background: rgba(255,255,255,0.15);
+    box-shadow: 0 0 20px rgba(255,78,80,0.4);
+}
+
+#searchic {
+    position: absolute;
+    font-size: 22px;
+    top: 35px;
+    right: 50px;
+    color: #ff4e50;
+    transition: 0.3s ease;
+}
+
+#searchic:hover {
+    transform: scale(1.2);
+    color: #f9d423;
+}
+
+/* ==============================
+   4. 메인 영상 영역
+============================== */
+#mainvideo {
+    background: #12121a;
+    height: 700px;
+    display: none;
+    padding: 40px;
+    transition: all 0.5s ease;
+}
+
+.movileft {
+    background: rgba(255,255,255,0.05);
+    border-radius: 20px;
+    padding: 20px;
+    backdrop-filter: blur(20px);
+}
+
+.moviright {
+    padding-left: 20px;
+}
+
+.moviright > li {
+    width: 48%;
+    margin: 1%;
+    background: rgba(255,255,255,0.05);
+    border-radius: 15px;
+    padding: 10px;
+    transition: 0.3s ease;
+    cursor: pointer;
+}
+
+.moviright > li:hover {
+    transform: translateY(-5px);
+    background: rgba(255,255,255,0.1);
+}
+
+/* ==============================
+   5. 영화 카드 영역
+============================== */
+#table {
+    background: #0f0f14;
+    padding: 40px;
+}
+
+.inline {
+    display: inline-block;
+    padding: 15px;
+    width: 20%;
+    vertical-align: top;
+}
+
+.inline > li {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.inline > li > img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    border-radius: 20px;
+    transition: 0.4s ease;
+}
+
+.inline > li > img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+}
+
+/* ==============================
+   6. 이미지 박스
+============================== */
+#movieimg {
+    width: 100%;
+    height: 300px;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+#movieimg > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ==============================
+   7. 로딩 화면 개선
+============================== */
+#loding {
+    background: linear-gradient(135deg, rgb(20,20,20), rgb(20,20,20));
+    transition: opacity 1s ease;
+}
+
+/* ==============================
+   8. 반응형
+============================== */
+@media (max-width: 1200px) {
+    .inline {
+        width: 33%;
+    }
+}
+
+@media (max-width: 768px) {
+    .inline {
+        width: 50%;
+    }
+
+    .top_title {
+        font-size: 36px;
+    }
+
+    .top_extwi {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .inline {
+        width: 100%;
+    }
+}
