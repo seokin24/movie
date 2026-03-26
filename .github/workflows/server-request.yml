@@ -1,9 +1,6 @@
-name: Server Request with Python Self-Signed SSL
+name: Server Request with self-signed SSL
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
@@ -14,28 +11,29 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 서버 초기화
+      # 1️⃣ 서버 초기화
       - name: Initialize server
         run: |
           echo "Initializing server..."
-          curl --cacert .github/certs/cert.pem https://152.67.204.46:28585/ || true
+          curl -k https://152.67.204.46:28585/ || true
 
-      # 서버 준비 확인
+      # 2️⃣ 서버 준비 확인
       - name: Wait for server readiness
         run: |
+          echo "Waiting for server to be ready..."
           for i in {1..10}; do
-            status=$(curl --cacert .github/certs/cert.pem -s -o /dev/null -w "%{http_code}" https://152.67.204.46:28585/)
+            status=$(curl -k -s -o /dev/null -w "%{http_code}" https://152.67.204.46:28585/)
             if [ "$status" -eq 200 ]; then
               echo "Server is ready!"
               break
             fi
-            echo "Server not ready, retrying..."
+            echo "Server not ready yet, retrying..."
             sleep 5
           done
 
-      # 실제 API 요청
+      # 3️⃣ 실제 API 요청 (존재하는 경로로)
       - name: Send API request
         run: |
-          curl --cacert .github/certs/cert.pem -X POST https://152.67.204.46:28585/api \
+          curl -k -X POST https://152.67.204.46:28585/ \
             -H "Content-Type: application/json" \
             -d '{"key":"value"}'
