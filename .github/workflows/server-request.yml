@@ -1,45 +1,41 @@
-name: Server Request Workflow
+name: Server Request with Python Self-Signed SSL
 
-# 언제 실행할지 설정
 on:
   push:
     branches:
-      - main           # main 브랜치에 push될 때 실행
-  workflow_dispatch:   # 수동 실행 가능
+      - main
+  workflow_dispatch:
 
 jobs:
-  request-server:
+  server-request:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ 리포지토리 체크아웃 (옵션)
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2️⃣ 서버 깨우기
-      - name: Wake up server
+      # 서버 초기화
+      - name: Initialize server
         run: |
-          echo "Waking up server..."
-          curl -k https://152.67.204.46:28585/ || true
+          echo "Initializing server..."
+          curl --cacert .github/certs/cert.pem https://152.67.204.46:28585/ || true
 
-      # 3️⃣ 서버 준비 확인
-      - name: Wait for server
+      # 서버 준비 확인
+      - name: Wait for server readiness
         run: |
-          echo "Checking if server is ready..."
           for i in {1..10}; do
-            status=$(curl -k -s -o /dev/null -w "%{http_code}" https://152.67.204.46:28585/)
+            status=$(curl --cacert .github/certs/cert.pem -s -o /dev/null -w "%{http_code}" https://152.67.204.46:28585/)
             if [ "$status" -eq 200 ]; then
               echo "Server is ready!"
               break
             fi
-            echo "Server not ready yet, retrying in 5 seconds..."
+            echo "Server not ready, retrying..."
             sleep 5
           done
 
-      # 4️⃣ 실제 요청 보내기
-      - name: Send request
+      # 실제 API 요청
+      - name: Send API request
         run: |
-          echo "Sending POST request to server..."
-          curl -k -X POST https://152.67.204.46:28585/api \
+          curl --cacert .github/certs/cert.pem -X POST https://152.67.204.46:28585/api \
             -H "Content-Type: application/json" \
             -d '{"key":"value"}'
